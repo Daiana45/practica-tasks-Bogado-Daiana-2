@@ -46,3 +46,19 @@ export const getUsers = async (req, res) => {
             });
         }
 };
+
+export const getUserById = async (req, res) => {
+    try{
+        const {id} = req.params; //saco el numero de la URL
+        const user = await User.findByPk(id); //lo busco en la base
+        if(!user) { //no existe?
+            return res.status(404).json({message: "usuario no encontrado"})
+                }
+            return res.status (200).json(user); //existe
+    } catch(error) {
+            return res.status(500).json({
+                 message: "error al obtener el usuario",
+                error: error.message,
+                });
+            }
+        };
