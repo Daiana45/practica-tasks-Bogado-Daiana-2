@@ -1,5 +1,7 @@
 import express from "express";
 import sequelize from "./src/config/database.js"; //traemos nuestra conexion a la base de datos.
+import Task from "./src/models/task.models.js";
+import User from "./src/models/user.models.js";
 
 const app = express(); //guardamos la funcion express dentro de app
 const PORT = 3000; //el puerto
@@ -14,6 +16,10 @@ const IniciarServidor = async () =>{
     try {
         await sequelize.authenticate;
         console.log("la conexion fue un exito")
+
+        await sequelize.sync();
+        console.log("Tablas sincronizadas");
+
     app.listen(PORT, () => {
         console.log (`el servidor esta escuchando en el puerto http://localhost: ${PORT}`);
     })
