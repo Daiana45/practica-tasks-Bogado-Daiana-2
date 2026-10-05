@@ -1,0 +1,10 @@
+El paquete dotenv es un modulo de node, que guarda informacion como host, name, password y el puerto en un archivo .env.
+
+#1 se instala:
+se instala como una dependencia, escribiendo en la terminal "npm install dotenv".
+#2 configuracion y uso:
+primero se crea un archivo en la raiz, a la misma altura del package.json.Las variables deben ir en clave-valor. Este archivo nunca debe subirse al repositorio.
+#3 cargar la configuracion: 
+se debe escribir dotenv() en app.js para ejecutar la funcion.
+#4 acceso a la varible:
+una vez puesta en el .env, la variables quedan a disposicion de toda la aplicacion gracias al process.env.
