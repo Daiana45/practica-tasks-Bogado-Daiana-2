@@ -5,6 +5,7 @@ import User from "./src/models/user.models.js";
 import userRoutes from "./src/routes/user.routes.js"
 import taskRoutes from "./src/routes/task.routes.js"
 
+import "dotenv/config";
 const app = express(); //guardamos la funcion express dentro de app
 const PORT = 3000; //el puerto
 
