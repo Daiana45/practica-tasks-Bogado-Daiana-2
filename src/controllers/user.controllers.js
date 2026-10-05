@@ -1,98 +1,147 @@
 import User from "../models/user.models.js"; //trae el modelo user que exportamos con export default. Con el podemos hacer consultas a la tabla Users sin escribit SQL.
 
-export const createUser = async (req, res) => { //export nombrado. Nos permite exportar varias funciones del mismo archivo y se importa con llaves. crea un usuario, async la funcion es asincrona porque habla con la base de datos y eso tarda.
-    try{ //probamos el codigo y, si algo falla, saltamos al catch.
-        const {name, email, password} = req.body; //req.body es el JSON que mando el cliente. Existe gracias a app.use(express.json()). El const tiene la desestructuracion: es lo mismo que escribir linea por linea.
-        if (typeof name !== "string" || name.trim() === "" || name.length > 100) { //typeof name !== "string" no es texto. name.trim() === "" esta vacio o solo tiene espacios, trim() quita los espacios y name.length > 100 supera los 100 caracteres permitidos.
-            return res.status(400).json({ //si los datos no son validos, el codigo HTTP 400 Bad Request(el cliente mando algo incorrecto) y .json({message:...}) cuerpo de la respuesta en JSON con un mensaje claro.
-                message:"el nombre debe ser texto no vacio de hasta 100 caracteres", //el return corta la funcion. Sin return, despues de responder seguiria ejecutandose el resto y express daria error por responder dos veces.
-            });
-        }
-        if (typeof email !== "string" || email.trim() === "" || email.length > 100) {
-    return res.status(400).json({
-        message: "el email debe ser texto no vacio de hasta 100 caracteres",
-    });
-}
-if (typeof password !== "string" || password.trim() === "" || password.length > 100) {
-    return res.status(400).json({
-        message: "la contraseña debe ser texto no vacio de hasta 100 caracteres",
-    });
-}
-        const existingUser = await User.findOne({where: {email}}); //findOne busca un registro, where:{email} es la condicion y await espera el resultado de la base. 
-        if (existingUser) {
-            return res.status(400).json({message: "el email ya esta registrado"});
-        }
-        const newUser = await User.create({name, email, password}); //user.create({..}) hace el INSERT y devueñve el registro creado, con su id.
-        return res.status(201).json({ //201 created: el codigo correcto cuando se crea un recurso.
-            message: "Usuario creado correctamente", //mensaje exitoso.
-            user: newUser,
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: "Error al crear el usuario",
-            error: error.message,
-        });
+export const createUser = async (req, res) => {
+  //export nombrado. Nos permite exportar varias funciones del mismo archivo y se importa con llaves. crea un usuario, async la funcion es asincrona porque habla con la base de datos y eso tarda.
+  try {
+    //probamos el codigo y, si algo falla, saltamos al catch.
+    const { name, email, password } = req.body; //req.body es el JSON que mando el cliente. Existe gracias a app.use(express.json()). El const tiene la desestructuracion: es lo mismo que escribir linea por linea.
+    if (typeof name !== "string" || name.trim() === "" || name.length > 100) {
+      //typeof name !== "string" no es texto. name.trim() === "" esta vacio o solo tiene espacios, trim() quita los espacios y name.length > 100 supera los 100 caracteres permitidos.
+      return res.status(400).json({
+        //si los datos no son validos, el codigo HTTP 400 Bad Request(el cliente mando algo incorrecto) y .json({message:...}) cuerpo de la respuesta en JSON con un mensaje claro.
+        message: "el nombre debe ser texto no vacio de hasta 100 caracteres", //el return corta la funcion. Sin return, despues de responder seguiria ejecutandose el resto y express daria error por responder dos veces.
+      });
     }
+    if (
+      typeof email !== "string" ||
+      email.trim() === "" ||
+      email.length > 100
+    ) {
+      return res.status(400).json({
+        message: "el email debe ser texto no vacio de hasta 100 caracteres",
+      });
+    }
+    if (
+      typeof password !== "string" ||
+      password.trim() === "" ||
+      password.length > 100
+    ) {
+      return res.status(400).json({
+        message:
+          "la contraseña debe ser texto no vacio de hasta 100 caracteres",
+      });
+    }
+    const existingUser = await User.findOne({ where: { email } }); //findOne busca un registro, where:{email} es la condicion y await espera el resultado de la base.
+    if (existingUser) {
+      return res.status(400).json({ message: "el email ya esta registrado" });
+    }
+    const newUser = await User.create({ name, email, password }); //user.create({..}) hace el INSERT y devueñve el registro creado, con su id.
+    return res.status(201).json({
+      //201 created: el codigo correcto cuando se crea un recurso.
+      message: "Usuario creado correctamente", //mensaje exitoso.
+      user: newUser,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error al crear el usuario",
+      error: error.message,
+    });
+  }
 };
 
 export const getUsers = async (req, res) => {
-        try{
-            const users = await User.findAll();
-            return res.status(200).json(users);
-        } catch (error) {
-            return res.status(500).json({
-                message: "error al obtener los usuario",
-                error: error.message,
-            });
-        }
+  try {
+    const users = await User.findAll();
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({
+      message: "error al obtener los usuario",
+      error: error.message,
+    });
+  }
 };
 
 export const getUserById = async (req, res) => {
-    try{
-        const {id} = req.params; //saco el numero de la URL
-        const user = await User.findByPk(id); //lo busco en la base
-        if(!user) { //no existe?
-            return res.status(404).json({message: "usuario no encontrado"})
-                }
-            return res.status (200).json(user); //existe
-    } catch(error) {
-            return res.status(500).json({
-                 message: "error al obtener el usuario",
-                error: error.message,
-                });
-            }
+  try {
+    const { id } = req.params; //saco el numero de la URL
+    const user = await User.findByPk(id); //lo busco en la base
+    if (!user) {
+      //no existe?
+      return res.status(404).json({ message: "usuario no encontrado" });
+    }
+    return res.status(200).json(user); //existe
+  } catch (error) {
+    return res.status(500).json({
+      message: "error al obtener el usuario",
+      error: error.message,
+    });
+  }
 };
 
-export const deleteUser = async (req, res) => {//crea la funcion delete y la deja disponible para otros archivos.
-    try {
-        const {id} = req.params; //saca el numero de la URL.
-        const user = await User.findByPk(id); //busca en la base el usuario con ese nombre. Si existe, lo guarda en user. si no existe user queda vacion, await espera respuesta de la base.
-        if(!user) {
-            return res.status(404).json({message: "usuario no creado"}); 
-            await user.destroy(); //borra ese usuario de la base. Solo se llega aca si el usuario existe.
-            return res.status(200).json({message: "usuario eliminado con exito" });
-        };
-        } catch (error) {
-            return res.status(500).json({
-                message: "error al eliminar al usuario",
-                error: error.message,
-            });
-    };
-}
-
-export const updateUser = async (req, res) => { 
-    try {
-        const {id} = req.params;
-        const {name, email, password} = req.body; //saca del json los tres datos que manda el usuario.
-        const user = await user.findByPk(id); //busca en la base el usuario con ese numero, si no existe user queda en null.
-        if(!user) {
-            return res.status(404).json({message:"usuario no encontrado"});
-            return res.status(200).json({message:"funciona"});
-        }
-    } catch (error) {
-        return res.status(500).json({ //500 significa que el servidor encontro una condicion inesperada que le impidio procesar la solicitud, pero no especifica la solicitud.
-            message:"error al actualizar el usuario",
-            error: error.message,
-        });
+export const deleteUser = async (req, res) => {
+  //crea la funcion delete y la deja disponible para otros archivos.
+  try {
+    const { id } = req.params; //saca el numero de la URL.
+    const user = await User.findByPk(id); //busca en la base el usuario con ese nombre. Si existe, lo guarda en user. si no existe user queda vacion, await espera respuesta de la base.
+    if (!user) {
+      return res.status(404).json({ message: "usuario no creado" });
     }
+     await user.destroy(); //borra ese usuario de la base. Solo se llega aca si el usuario existe.
+      return res.status(200).json({ message: "usuario eliminado con exito" });
+  } catch (error) {
+    return res.status(500).json({
+      message: "error al eliminar al usuario",
+      error: error.message,
+    });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body; //saca del json los tres datos que manda el usuario.
+    const user = await User.findByPk(id); //busca en la base el usuario con ese numero, si no existe user queda en null.
+    if (!user) {
+      return res.status(404).json({ message: "usuario no encontrado" });
+    }
+    if (typeof name !== "string" || name.trim() === "" || name.length > 100) {
+      return res.status(400).json({
+        message: "el nombre no debe ser texto no vacio de hasta 100 caracteres",
+      });
+    }
+    if (
+      typeof email !== "string" ||
+      email.trim() === "" ||
+      email.length > 100
+    ) {
+      return res.status(400).json({
+        message: "el email debe ser texto no vacio hasta 100 caracteres",
+      });
+    }
+    if (
+      typeof password !== "string" ||
+      password.trim() === "" ||
+      password.length > 100
+    ) {
+      return res.status(400).json({
+        message:
+          "la contraseña debe ser texto no vacio de hasta 100 caracteres",
+      });
+    }
+    const emailInUse = await User.findOne({where: {email}});
+    if (emailInUse && emailInUse.id !== user.id) {
+        return res.status(400).json({message: "el email ya esta registrado"});
+    }
+    await user.update({name, email, password});
+    return res.status(200).json({
+        message: "Usuario actualizado correctamente",
+        user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      //500 significa que el servidor encontro una condicion inesperada que le impidio procesar la solicitud, pero no especifica la solicitud.
+      message: "error al actualizar el usuario",
+      error: error.message,
+    });
+  }
 };
