@@ -79,3 +79,20 @@ export const deleteUser = async (req, res) => {//crea la funcion delete y la dej
             });
     };
 }
+
+export const updateUser = async (req, res) => { 
+    try {
+        const {id} = req.params;
+        const {name, email, password} = req.body; //saca del json los tres datos que manda el usuario.
+        const user = await user.findByPk(id); //busca en la base el usuario con ese numero, si no existe user queda en null.
+        if(!user) {
+            return res.status(404).json({message:"usuario no encontrado"});
+            return res.status(200).json({message:"funciona"});
+        }
+    } catch (error) {
+        return res.status(500).json({ //500 significa que el servidor encontro una condicion inesperada que le impidio procesar la solicitud, pero no especifica la solicitud.
+            message:"error al actualizar el usuario",
+            error: error.message,
+        });
+    }
+};
