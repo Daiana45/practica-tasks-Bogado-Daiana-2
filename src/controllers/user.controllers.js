@@ -61,4 +61,21 @@ export const getUserById = async (req, res) => {
                 error: error.message,
                 });
             }
+};
+
+export const deleteUser = async (req, res) => {//crea la funcion delete y la deja disponible para otros archivos.
+    try {
+        const {id} = req.params; //saca el numero de la URL.
+        const user = await User.findByPk(id); //busca en la base el usuario con ese nombre. Si existe, lo guarda en user. si no existe user queda vacion, await espera respuesta de la base.
+        if(!user) {
+            return res.status(404).json({message: "usuario no creado"}); 
+            await user.destroy(); //borra ese usuario de la base. Solo se llega aca si el usuario existe.
+            return res.status(200).json({message: "usuario eliminado con exito" });
         };
+        } catch (error) {
+            return res.status(500).json({
+                message: "error al eliminar al usuario",
+                error: error.message,
+            });
+    };
+}
