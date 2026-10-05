@@ -1,35 +1,31 @@
 {
-<<<<<<< HEAD
-  "name": "practica-task-bogado-daiana",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2/issues"
-  },
-  "homepage": "https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2#readme",
-  "dependencies": {
-    "express": "^5.2.1",
-    "mysql2": "^3.24.5",
-    "sequelize": "^6.37.8"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
-=======
-  "dependencies": {
-    "dotenv": "^18.0.5"
->>>>>>> feature/env-config
-  }
+"name": "practica-task-bogado-daiana",
+"version": "1.0.0",
+"description": "",
+"main": "app.js",
+"scripts": {
+"start": "node app.js",
+"dev": "nodemon app.js"
+},
+"repository": {
+"type": "git",
+"url": "git+https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2.git"
+},
+"keywords": [],
+"author": "",
+"license": "ISC",
+"type": "module",
+"bugs": {
+"url": "https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2/issues"
+},
+"homepage": "https://github.com/Daiana45/practica-tasks-Bogado-Daiana-2#readme",
+"dependencies": {
+"dotenv": "^18.0.5",
+"express": "^5.2.1",
+"mysql2": "^3.24.5",
+"sequelize": "^6.37.8"
+},
+"devDependencies": {
+"nodemon": "^3.1.14"
+}
 }
