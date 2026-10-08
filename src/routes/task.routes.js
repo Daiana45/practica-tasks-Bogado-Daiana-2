@@ -1,7 +1,7 @@
-import { Router } from "express";
-import {createTask, getTasks,getTasksById, deleteTask, updateTask } from "../controllers/task.controllers.js"
+import { Router } from "express"; //traemos router, router permite crear un grupo de rutas por separado.
+import {createTask, getTasks,getTasksById, deleteTask, updateTask } from "../controllers/task.controllers.js" //importamos las dunciones de controller
 
-const router = Router();
+const router = Router(); //aca creamos una instabcia del router
 router.post("/", createTask); //router.post responde al metodo http post(crear).
 router.get("/", getTasks);
 router.get("/:id",getTasksById);

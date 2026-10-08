@@ -1,7 +1,7 @@
-import sequelize from "../config/database.js";
-import { DataTypes } from "sequelize";
+import sequelize from "../config/database.js"; //traemos la conexion a la bd
+import { DataTypes } from "sequelize"; //datatypes contiene los tipos de datos
 
-const Task = sequelize.define("task", {
+const Task = sequelize.define("task", { //creamos el modelo
     id:{
     type: DataTypes.INTEGER,
     primaryKey: true,

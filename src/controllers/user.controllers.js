@@ -1,6 +1,7 @@
-import User from "../models/user.models.js"; //trae el modelo user que exportamos con export default. Con el podemos hacer consultas a la tabla Users sin escribit SQL.
+import User from "../models/user.models.js"; //trae el modelo user que exportamos con export default. Con el podemos hacer consultas a la tabla Users sin escribit SQL. //lo recibimos din llaves
 
-export const createUser = async (req, res) => {
+//creamos un usuario
+export const createUser = async (req, res) => { //se importa con llaves //async porque es una duncion asincrona
   //export nombrado. Nos permite exportar varias funciones del mismo archivo y se importa con llaves. crea un usuario, async la funcion es asincrona porque habla con la base de datos y eso tarda.
   try {
     //probamos el codigo y, si algo falla, saltamos al catch.
@@ -12,7 +13,7 @@ export const createUser = async (req, res) => {
         message: "el nombre debe ser texto no vacio de hasta 100 caracteres", //el return corta la funcion. Sin return, despues de responder seguiria ejecutandose el resto y express daria error por responder dos veces.
       });
     }
-    if (
+    if ( //aunque se valide el email no se esta comprobando que este en un formato correcto
       typeof email !== "string" ||
       email.trim() === "" ||
       email.length > 100
@@ -26,13 +27,13 @@ export const createUser = async (req, res) => {
       password.trim() === "" ||
       password.length > 100
     ) {
-      return res.status(400).json({
+      return res.status(400).json({ //400 los datos que mando el cliente no son validos
         message:
           "la contraseña debe ser texto no vacio de hasta 100 caracteres",
       });
     }
-    const existingUser = await User.findOne({ where: { email } }); //findOne busca un registro, where:{email} es la condicion y await espera el resultado de la base.
-    if (existingUser) {
+    const existingUser = await User.findOne({ where: { email } }); //findOne busca un registro, where:{email} es la condicion y await espera el resultado de la base. findOne busca un registro que cumple la condicion, la condicion es si el email es igual al que recibi
+    if (existingUser) { //buscamos si existe el usuario
       return res.status(400).json({ message: "el email ya esta registrado" });
     }
     const newUser = await User.create({ name, email, password }); //user.create({..}) hace el INSERT y devueñve el registro creado, con su id.
@@ -49,6 +50,8 @@ export const createUser = async (req, res) => {
   }
 };
 
+
+//obtener todos los usuarios
 export const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
